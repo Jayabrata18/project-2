@@ -14,5 +14,18 @@ spec:
     spec:
       containers:
         - name: posts
-          image: docker.io/joy/posts:0.0.1   
+          image: jayabrata180/posts:latest
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: posts-clusterip-srv
+spec: 
+  selector:
+    app: posts
+  ports: 
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000             
 
