@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: posts-deploy
 spec:
   replicas: 1
@@ -15,17 +15,23 @@ spec:
       containers:
         - name: posts
           image: jayabrata180/posts:latest
+          resources: # Add resource limits for the container
+            limits:
+              cpu: "0.5"  # Limits CPU usage to 0.5 cores
+              memory: "512Mi"  # Limits memory usage to 512 MiB
+            requests:
+              cpu: "0.2"  # Requests 0.2 cores of CPU
+              memory: "256Mi"  # Requests 256 MiB of memory
 ---
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: posts-clusterip-srv
-spec: 
+spec:
   selector:
     app: posts
-  ports: 
+  ports:
     - name: posts
       protocol: TCP
       port: 4000
-      targetPort: 4000             
-
+      targetPort: 4000
