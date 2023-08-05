@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: jayabrata180/client:latest
+          resources: # Add resource limits for the container
+            limits:
+              cpu: "0.5"  # Limits CPU usage to 0.5 cores
+              memory: "512Mi"  # Limits memory usage to 512 MiB
+            requests:
+              cpu: "0.2"  # Requests 0.2 cores of CPU
+              memory: "256Mi"  # Requests 256 MiB of memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
